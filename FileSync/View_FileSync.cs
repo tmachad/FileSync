@@ -7,14 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FileSync.Controllers;
 
 namespace FileSync
 {
-    public partial class Form1 : Form
+    public partial class View_FileSync : Form, IView
     {
-        public Form1()
+        private Controller _controller;
+
+        public View_FileSync()
         {
             InitializeComponent();
+
+            this._controller = new Controller(this);
         }
     }
 }
