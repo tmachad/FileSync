@@ -1,0 +1,6 @@
+.vs
+.git
+*/resources
+**/bin
+**/obj
+**/packages

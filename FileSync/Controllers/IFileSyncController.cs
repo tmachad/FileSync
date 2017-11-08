@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace FileSync.Controllers
 {
-    interface IView
+    interface IFileSyncController
     {
+        void StartEvent(object sender, EventArgs e);
     }
 }

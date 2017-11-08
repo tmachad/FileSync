@@ -7,4 +7,6 @@ C:\Users\O\Documents\Visual Studio 2013\Projects\FileSync\FileSync\obj\Debug\Fil
 C:\Users\O\Documents\Visual Studio 2013\Projects\FileSync\FileSync\obj\Debug\FileSync.csproj.GenerateResource.Cache
 C:\Users\O\Documents\Visual Studio 2013\Projects\FileSync\FileSync\obj\Debug\FileSync.exe
 C:\Users\O\Documents\Visual Studio 2013\Projects\FileSync\FileSync\obj\Debug\FileSync.pdb
-C:\Users\O\Documents\Visual Studio 2013\Projects\FileSync\FileSync\obj\Debug\FileSync.Views.View_FileSync.resources
+C:\Users\O\Documents\Visual Studio 2013\Projects\FileSync\FileSync\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\O\Documents\Visual Studio 2013\Projects\FileSync\FileSync\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\O\Documents\Visual Studio 2013\Projects\FileSync\FileSync\obj\Debug\FileSync.csproj.CoreCompileInputs.cache
