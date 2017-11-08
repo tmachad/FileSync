@@ -1,6 +1,7 @@
 .vs
 .git
-*/resources
-**/bin
-**/obj
-**/packages
+*.suo
+resources
+bin
+obj
+packages
