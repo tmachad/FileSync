@@ -32,7 +32,19 @@ namespace FileSync.Controllers
                 return;
             }
 
+            this._view.SetAlertText("Finding files");
             this._view.FindingFiles();
+
+            int numberOfFiles = FileManipulator.DeepFileCount(sourcePath);
+
+            this._view.SetAlertText($"Copying {numberOfFiles} files");
+            this._view.CopyingFiles(numberOfFiles);
+            int count = 0;
+            FileManipulator.DeepCopy(sourcePath, destinationPath, (increment) =>
+            {
+                count += increment;
+                this._view.SetProgress(count);
+            });
         }
     }
 }

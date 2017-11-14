@@ -60,7 +60,7 @@ namespace FileSync
             this.startButton.Hide();
             this.progressBar.Show();
             this.progressBar.Style = ProgressBarStyle.Continuous;
-            this.progressBar.Minimum = 0;
+            this.progressBar.Minimum = 1;
             this.progressBar.Maximum = total;
             this.progressBar.Step = 1;
         }

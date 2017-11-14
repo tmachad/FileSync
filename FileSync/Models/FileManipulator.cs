@@ -40,11 +40,19 @@ namespace FileSync.Models
             return count;
         }
 
-        public static void DeepCopy(DirectoryInfo source, DirectoryInfo dest)
+        public static int DeepFileCount(string dir)
+        {
+            return DeepFileCount(new DirectoryInfo(dir));
+        }
+
+        public static void DeepCopy(DirectoryInfo source, DirectoryInfo dest, Action<int> progressCallback)
         {
             foreach(FileSystemInfo item in source.GetFileSystemInfos())
             {
-                if (item.GetType() == typeof(FileInfo))
+                if (item.GetType() != dest.GetType())
+                {
+                    // Something went wrong. Do something!
+                } else if (item.GetType() == typeof(FileInfo))
                 {
                     string pathToDestFile = Path.Combine(dest.FullName, GetRelativePath(source, item));
                     if (File.Exists(pathToDestFile))
@@ -52,17 +60,27 @@ namespace FileSync.Models
                         FileInfo targetFile = new FileInfo(pathToDestFile);
                         if (item.LastWriteTimeUtc > targetFile.LastWriteTimeUtc)
                         {
-                            // Target file is older. Replace with source file
+                            // Target file is older. Remove old file, then copy new file
+                            File.Replace(source.FullName, dest.FullName, null);
                         }
                     } else
                     {
-                        // Copy the file over
+                        // No destination file found. Copy file
+                        File.Copy(source.FullName, dest.FullName);
                     }
                 } else if (item.GetType() == typeof(DirectoryInfo))
                 {
-
+                    string pathToDestFolder = Path.Combine(dest.FullName, GetRelativePath(source, item));
+                    Directory.CreateDirectory(pathToDestFolder);    // Only creates missing directories
                 }
+
+                progressCallback(1);
             }
+        }
+
+        public static void DeepCopy(string source, string dest, Action<int> progressCallback)
+        {
+            DeepCopy(new DirectoryInfo(source), new DirectoryInfo(dest), progressCallback);
         }
 
         public static string GetRelativePath(string root, string child)
