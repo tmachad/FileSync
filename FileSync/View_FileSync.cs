@@ -24,7 +24,6 @@ namespace FileSync
             InitializeComponent();
 
             this._controller = new Controller(this);
-            this.startButton.Click += new EventHandler(_controller.StartEvent);
 
             this.fileDialog = new CommonOpenFileDialog()
             {
@@ -33,41 +32,42 @@ namespace FileSync
             };
         }
 
-        public void SetTooltipText(string text)
+        public void SetAlertText(string text)
         {
             this.toolStripStatusLabel.Text = text;
         }
-
-        public string GetSourcePath()
-        {
-            return this.sourceTextBox.Text;
-        }
-
-        public string GetDestinationPath()
-        {
-            return this.destinationTextBox.Text;
-        }
         
-        public void ConfigProgressIndeterminate()
+        public void ClearAlertText()
+        {
+            this.toolStripStatusLabel.Text = "";
+        }
+
+        public void InitialState()
+        {
+            this.startButton.Show();
+            this.progressBar.Hide();
+        }
+
+        public void FindingFiles()
         {
             this.startButton.Hide();
             this.progressBar.Show();
             this.progressBar.Style = ProgressBarStyle.Marquee;
         }
 
-        public void ConfigProgressDeterminite(int min = 1, int max = 100, int stepSize = 1)
+        public void CopyingFiles(int total = 100)
         {
             this.startButton.Hide();
             this.progressBar.Show();
             this.progressBar.Style = ProgressBarStyle.Continuous;
-            this.progressBar.Minimum = min;
-            this.progressBar.Maximum = max;
-            this.progressBar.Step = stepSize;
+            this.progressBar.Minimum = 0;
+            this.progressBar.Maximum = total;
+            this.progressBar.Step = 1;
         }
 
-        public void StepProgress()
+        public void SetProgress(int amount)
         {
-            this.progressBar.PerformStep();
+            this.progressBar.Value = amount;
         }
 
         private void sourceButton_Click(object sender, EventArgs e)
@@ -84,6 +84,11 @@ namespace FileSync
             {
                 this.destinationTextBox.Text = this.fileDialog.FileName;
             }
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            this._controller.Start(this.sourceTextBox.Text, this.destinationTextBox.Text);
         }
     }
 }

@@ -19,20 +19,20 @@ namespace FileSync.Controllers
             this._file = new FileManipulator();
         }
 
-        public void StartEvent(object sender, EventArgs e)
+        public void Start(string sourcePath, string destinationPath)
         {
-            string sourcePath = this._view.GetSourcePath();
-            string destinationPath = this._view.GetDestinationPath();
-
+            this._view.ClearAlertText();
             try
             {
                 sourcePath = FileManipulator.ValidatePath(sourcePath, "Source");
                 destinationPath = FileManipulator.ValidatePath(destinationPath, "Destination");
             } catch(Exception ex)
             {
-                this._view.SetTooltipText(ex.Message);
+                this._view.SetAlertText(ex.Message);
                 return;
             }
+
+            this._view.FindingFiles();
         }
     }
 }
