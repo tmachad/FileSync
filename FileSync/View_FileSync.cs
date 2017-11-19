@@ -44,30 +44,70 @@ namespace FileSync
 
         public void InitialState()
         {
-            this.startButton.Show();
-            this.progressBar.Hide();
+            if (this.progressBar.InvokeRequired || this.startButton.InvokeRequired)
+            {
+                Action d = InitialState;
+                this.Invoke(d);
+            } else
+            {
+                this.startButton.Show();
+                this.progressBar.Hide();
+            }
         }
 
         public void FindingFiles()
         {
-            this.startButton.Hide();
-            this.progressBar.Show();
-            this.progressBar.Style = ProgressBarStyle.Marquee;
+            if (this.progressBar.InvokeRequired || this.startButton.InvokeRequired)
+            {
+                Action d = FindingFiles;
+                this.Invoke(d);
+            } else
+            {
+                this.startButton.Hide();
+                this.progressBar.Show();
+                this.progressBar.Style = ProgressBarStyle.Marquee;
+            }
         }
 
         public void CopyingFiles(int total = 100)
         {
-            this.startButton.Hide();
-            this.progressBar.Show();
-            this.progressBar.Style = ProgressBarStyle.Continuous;
-            this.progressBar.Minimum = 1;
-            this.progressBar.Maximum = total;
-            this.progressBar.Step = 1;
+            if (this.progressBar.InvokeRequired || this.startButton.InvokeRequired)
+            {
+                Action<int> d = CopyingFiles;
+                this.Invoke(d, new object[] { total });
+            } else
+            {
+                this.startButton.Hide();
+                this.progressBar.Show();
+                this.progressBar.Style = ProgressBarStyle.Continuous;
+                this.progressBar.Minimum = 1;
+                this.progressBar.Maximum = total;
+                this.progressBar.Step = 1;
+            }
+        }
+
+        public void DoneCopyingFiles()
+        {
+            if (this.progressBar.InvokeRequired)
+            {
+                Action d = DoneCopyingFiles;
+                this.Invoke(d);
+            } else
+            {
+                this.progressBar.Hide();
+            }
         }
 
         public void SetProgress(int amount)
         {
-            this.progressBar.Value = amount;
+            if (this.progressBar.InvokeRequired)
+            {
+                Action<int> d = SetProgress;
+                this.Invoke(d, new object[] { amount });
+            } else
+            {
+                this.progressBar.Value = amount;
+            }
         }
 
         private void sourceButton_Click(object sender, EventArgs e)

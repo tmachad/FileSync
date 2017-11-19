@@ -49,10 +49,7 @@ namespace FileSync.Models
         {
             foreach(FileSystemInfo item in source.GetFileSystemInfos())
             {
-                if (item.GetType() != dest.GetType())
-                {
-                    // Something went wrong. Do something!
-                } else if (item.GetType() == typeof(FileInfo))
+                if (item.GetType() == typeof(FileInfo))
                 {
                     string pathToDestFile = Path.Combine(dest.FullName, GetRelativePath(source, item));
                     if (File.Exists(pathToDestFile))
@@ -61,20 +58,21 @@ namespace FileSync.Models
                         if (item.LastWriteTimeUtc > targetFile.LastWriteTimeUtc)
                         {
                             // Target file is older. Remove old file, then copy new file
-                            File.Replace(source.FullName, dest.FullName, null);
+                            File.Replace(item.FullName, pathToDestFile, null);
                         }
                     } else
                     {
                         // No destination file found. Copy file
-                        File.Copy(source.FullName, dest.FullName);
+                        File.Copy(item.FullName, pathToDestFile);
                     }
+                    progressCallback(1);
                 } else if (item.GetType() == typeof(DirectoryInfo))
                 {
                     string pathToDestFolder = Path.Combine(dest.FullName, GetRelativePath(source, item));
                     Directory.CreateDirectory(pathToDestFolder);    // Only creates missing directories
+                    progressCallback(1);
+                    DeepCopy(item.FullName, pathToDestFolder, progressCallback);
                 }
-
-                progressCallback(1);
             }
         }
 
@@ -85,9 +83,19 @@ namespace FileSync.Models
 
         public static string GetRelativePath(string root, string child)
         {
-            Uri rootUri = new Uri(root);
-            Uri targetUri = new Uri(child);
-            return rootUri.MakeRelativeUri(targetUri).ToString();
+            string relativePath = child.Replace(root, null);
+
+            if (relativePath[0] == '\\')
+            {
+                int count = 0;
+                while (relativePath[count] == '\\')
+                {
+                    count++;
+                }
+                relativePath = relativePath.Remove(0, count);
+            }
+
+            return relativePath;
         }
 
         public static string GetRelativePath(FileSystemInfo root, FileSystemInfo child)

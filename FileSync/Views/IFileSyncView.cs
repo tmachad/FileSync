@@ -39,6 +39,12 @@ namespace FileSync.Views
         void CopyingFiles(int total);
 
         /// <summary>
+        /// Sets the UI to a state that indicates that the 
+        /// application has finished copying files.
+        /// </summary>
+        void DoneCopyingFiles();
+
+        /// <summary>
         /// Sets the progress displayed by the UI. This number
         /// is in relation to the total amount set in the
         /// CopyingFiles(int) method. Calling SetProgress(int)

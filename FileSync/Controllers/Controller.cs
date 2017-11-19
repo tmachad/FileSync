@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FileSync.Models;
 using FileSync.Views;
+using System.Threading;
 
 namespace FileSync.Controllers
 {
@@ -12,6 +13,9 @@ namespace FileSync.Controllers
     {
         private readonly IFileSyncView _view;
         private readonly FileManipulator _file;
+
+        private string sourcePath = "";
+        private string destinationPath = "";
 
         public Controller(IFileSyncView view)
         {
@@ -31,6 +35,8 @@ namespace FileSync.Controllers
                 this._view.SetAlertText(ex.Message);
                 return;
             }
+            this.sourcePath = sourcePath;
+            this.destinationPath = destinationPath;
 
             this._view.SetAlertText("Finding files");
             this._view.FindingFiles();
@@ -39,12 +45,20 @@ namespace FileSync.Controllers
 
             this._view.SetAlertText($"Copying {numberOfFiles} files");
             this._view.CopyingFiles(numberOfFiles);
+
+            Thread copyThread = new Thread(StartFileCopy);
+            copyThread.Start();
+        }
+
+        private void StartFileCopy()
+        {
             int count = 0;
             FileManipulator.DeepCopy(sourcePath, destinationPath, (increment) =>
             {
                 count += increment;
                 this._view.SetProgress(count);
             });
+            this._view.DoneCopyingFiles();
         }
     }
 }
