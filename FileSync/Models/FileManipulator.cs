@@ -58,7 +58,7 @@ namespace FileSync.Models
                         if (item.LastWriteTimeUtc > targetFile.LastWriteTimeUtc)
                         {
                             // Target file is older. Remove old file, then copy new file
-                            File.Replace(item.FullName, pathToDestFile, null);
+                            File.Copy(item.FullName, pathToDestFile, true);
                         }
                     } else
                     {
