@@ -38,12 +38,12 @@ namespace FileSync.Controllers
             this.sourcePath = sourcePath;
             this.destinationPath = destinationPath;
 
-            this._view.SetAlertText("Finding files");
+            this._view.SetAlertText("Finding files...");
             this._view.FindingFiles();
 
             int numberOfFiles = FileManipulator.DeepFileCount(sourcePath);
 
-            this._view.SetAlertText($"Copying {numberOfFiles} files");
+            this._view.SetAlertText($"Copying {numberOfFiles} items");
             this._view.CopyingFiles(numberOfFiles);
 
             Thread copyThread = new Thread(StartFileCopy);
@@ -52,12 +52,19 @@ namespace FileSync.Controllers
 
         private void StartFileCopy()
         {
-            int count = 0;
-            FileManipulator.DeepCopy(sourcePath, destinationPath, (increment) =>
+            int totalCount = 0;
+            int copiedCount = 0;
+            FileManipulator.DeepCopy(sourcePath, destinationPath, (copied) =>
             {
-                count += increment;
-                this._view.SetProgress(count);
+                totalCount ++;
+                if (copied)
+                {
+                    copiedCount++;
+                }
+                this._view.SetProgress(totalCount);
+                this._view.SetAlertText($"Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} items");
             });
+            this._view.SetAlertText($"Done copying. Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} items");
             this._view.DoneCopyingFiles();
         }
     }

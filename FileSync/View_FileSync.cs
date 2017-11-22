@@ -44,7 +44,7 @@ namespace FileSync
 
         public void InitialState()
         {
-            if (this.progressBar.InvokeRequired || this.startButton.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 Action d = InitialState;
                 this.Invoke(d);
@@ -57,7 +57,7 @@ namespace FileSync
 
         public void FindingFiles()
         {
-            if (this.progressBar.InvokeRequired || this.startButton.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 Action d = FindingFiles;
                 this.Invoke(d);
@@ -71,7 +71,7 @@ namespace FileSync
 
         public void CopyingFiles(int total = 100)
         {
-            if (this.progressBar.InvokeRequired || this.startButton.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 Action<int> d = CopyingFiles;
                 this.Invoke(d, new object[] { total });
@@ -88,19 +88,20 @@ namespace FileSync
 
         public void DoneCopyingFiles()
         {
-            if (this.progressBar.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 Action d = DoneCopyingFiles;
                 this.Invoke(d);
             } else
             {
                 this.progressBar.Hide();
+                this.startButton.Show();
             }
         }
 
         public void SetProgress(int amount)
         {
-            if (this.progressBar.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 Action<int> d = SetProgress;
                 this.Invoke(d, new object[] { amount });

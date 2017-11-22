@@ -45,7 +45,7 @@ namespace FileSync.Models
             return DeepFileCount(new DirectoryInfo(dir));
         }
 
-        public static void DeepCopy(DirectoryInfo source, DirectoryInfo dest, Action<int> progressCallback)
+        public static void DeepCopy(DirectoryInfo source, DirectoryInfo dest, Action<bool> progressCallback)
         {
             foreach(FileSystemInfo item in source.GetFileSystemInfos())
             {
@@ -59,24 +59,36 @@ namespace FileSync.Models
                         {
                             // Target file is older. Remove old file, then copy new file
                             File.Copy(item.FullName, pathToDestFile, true);
+                            progressCallback(true);
+                        } else
+                        {
+                            progressCallback(false);
                         }
                     } else
                     {
                         // No destination file found. Copy file
                         File.Copy(item.FullName, pathToDestFile);
+                        progressCallback(true);
                     }
-                    progressCallback(1);
+                    
                 } else if (item.GetType() == typeof(DirectoryInfo))
                 {
                     string pathToDestFolder = Path.Combine(dest.FullName, GetRelativePath(source, item));
-                    Directory.CreateDirectory(pathToDestFolder);    // Only creates missing directories
-                    progressCallback(1);
+                    if (Directory.Exists(pathToDestFolder))
+                    {
+                        progressCallback(false);
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(pathToDestFolder);
+                        progressCallback(true);
+                    }
                     DeepCopy(item.FullName, pathToDestFolder, progressCallback);
                 }
             }
         }
 
-        public static void DeepCopy(string source, string dest, Action<int> progressCallback)
+        public static void DeepCopy(string source, string dest, Action<bool> progressCallback)
         {
             DeepCopy(new DirectoryInfo(source), new DirectoryInfo(dest), progressCallback);
         }
