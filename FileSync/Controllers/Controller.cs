@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FileSync.Models;
 using FileSync.Views;
 using System.Threading;
+using System.IO;
 
 namespace FileSync.Controllers
 {
@@ -23,18 +20,31 @@ namespace FileSync.Controllers
             this._file = new FileManipulator();
         }
 
+        /// <summary>
+        /// Starts the file copy process using the source and destination
+        /// directories given by sourcePath and destinationPath.
+        /// </summary>
+        /// <param name="sourcePath">Path to source directory</param>
+        /// <param name="destinationPath">Path to destination directory</param>
         public void Start(string sourcePath, string destinationPath)
         {
             this._view.ClearAlertText();
             try
             {
-                sourcePath = FileManipulator.ValidatePath(sourcePath, "Source");
-                destinationPath = FileManipulator.ValidatePath(destinationPath, "Destination");
-            } catch(Exception ex)
+                sourcePath = Path.GetFullPath(sourcePath);
+            } catch (Exception ex)
             {
-                this._view.SetAlertText(ex.Message);
+                this._view.SetAlertText("Error: Source path is invalid");
                 return;
             }
+            try
+            {
+                destinationPath = Path.GetFullPath(destinationPath);
+            } catch (Exception ex)
+            {
+                this._view.SetAlertText("Error: Destination path is invalid");
+            }
+
             this.sourcePath = sourcePath;
             this.destinationPath = destinationPath;
 
@@ -50,6 +60,9 @@ namespace FileSync.Controllers
             copyThread.Start();
         }
 
+        /// <summary>
+        /// Actually starts the file copy process on a seperate thread.
+        /// </summary>
         private void StartFileCopy()
         {
             int totalCount = 0;

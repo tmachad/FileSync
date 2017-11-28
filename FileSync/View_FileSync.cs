@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using FileSync.Views;
 using FileSync.Controllers;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using System.IO;
 
 namespace FileSync
 {
@@ -32,16 +24,28 @@ namespace FileSync
             };
         }
 
+        /// <summary>
+        /// Sets the text on the status strip.
+        /// </summary>
+        /// <param name="text">The text to display</param>
         public void SetAlertText(string text)
         {
             this.toolStripStatusLabel.Text = text;
         }
         
+        /// <summary>
+        /// Clears the text on the status strip.
+        /// </summary>
         public void ClearAlertText()
         {
             this.toolStripStatusLabel.Text = "";
         }
 
+        /// <summary>
+        /// Hides the progress bar, shows the start button,
+        /// and clears the source text box, destination text
+        /// box, and status strip.
+        /// </summary>
         public void InitialState()
         {
             if (this.InvokeRequired)
@@ -52,9 +56,19 @@ namespace FileSync
             {
                 this.startButton.Show();
                 this.progressBar.Hide();
+                this.toolStripStatusLabel.Text = "";
+                this.sourceTextBox.Clear();
+                this.sourceTextBox.Enabled = true;
+                this.destinationTextBox.Clear();
+                this.destinationTextBox.Enabled = true;
             }
         }
 
+        /// <summary>
+        /// Hides the start button, shows the progress
+        /// bar in a marquee style, and disables the 
+        /// source and destination text boxes.
+        /// </summary>
         public void FindingFiles()
         {
             if (this.InvokeRequired)
@@ -66,9 +80,18 @@ namespace FileSync
                 this.startButton.Hide();
                 this.progressBar.Show();
                 this.progressBar.Style = ProgressBarStyle.Marquee;
+                this.sourceTextBox.Enabled = false;
+                this.destinationTextBox.Enabled = false;
             }
         }
 
+        /// <summary>
+        /// Hides the start button, sets up the progress
+        /// bar for displaying copy progress using the given
+        /// total, and disables the source and destination text
+        /// boxes.
+        /// </summary>
+        /// <param name="total">Total number of items being copied</param>
         public void CopyingFiles(int total = 100)
         {
             if (this.InvokeRequired)
@@ -83,9 +106,15 @@ namespace FileSync
                 this.progressBar.Minimum = 1;
                 this.progressBar.Maximum = total;
                 this.progressBar.Step = 1;
+                this.sourceTextBox.Enabled = false;
+                this.destinationTextBox.Enabled = false;
             }
         }
 
+        /// <summary>
+        /// Hides the progress bar, shows the start button,
+        /// and enables teh source and destination text boxes.
+        /// </summary>
         public void DoneCopyingFiles()
         {
             if (this.InvokeRequired)
@@ -96,9 +125,17 @@ namespace FileSync
             {
                 this.progressBar.Hide();
                 this.startButton.Show();
+                this.sourceTextBox.Enabled = true;
+                this.destinationTextBox.Enabled = true;
             }
         }
 
+        /// <summary>
+        /// Sets the amount of progress to show on the progress
+        /// bar. The amount should be smaller than the total given
+        /// when CopyingFiles(int) was called.
+        /// </summary>
+        /// <param name="amount">The progress amount</param>
         public void SetProgress(int amount)
         {
             if (this.InvokeRequired)

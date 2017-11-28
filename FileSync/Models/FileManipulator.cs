@@ -1,28 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace FileSync.Models
 {
     class FileManipulator
     {
-
-        public static string ValidatePath(string path, string pathName)
-        {
-            string fullPath;
-            try
-            {
-                fullPath = Path.GetFullPath(path);
-            } catch(Exception ex)
-            {
-                throw new Exception($"Error: {pathName} path is invalid");
-            }
-            return fullPath;
-        }
-
+        /// <summary>
+        /// Counts the number of files and directories contained
+        /// in the given directory. Does not include the given
+        /// directory in the count.
+        /// </summary>
+        /// <param name="dir">The directory to count the contents of</param>
+        /// <returns>The number of items contained in dir</returns>
         public static int DeepFileCount(DirectoryInfo dir)
         {
             int count = 0;
@@ -40,11 +29,28 @@ namespace FileSync.Models
             return count;
         }
 
+        /// <summary>
+        /// Counts the number of files and directories contained
+        /// in the given directory. Does not include the given
+        /// directory in the count.
+        /// </summary>
+        /// <param name="dir">The directory to count the contents of</param>
+        /// <returns>The number of items contained in dir</returns>
         public static int DeepFileCount(string dir)
         {
             return DeepFileCount(new DirectoryInfo(dir));
         }
 
+        /// <summary>
+        /// Copies all of the contents of source into dest. If an item already exists in dest,
+        /// it is replace if and only if the item in source was modified more recently. The
+        /// progressCallback is called each time an item is copied or ignored, and is passed 
+        /// a 'true' if the item was copied and 'false' if it was ignored.
+        /// </summary>
+        /// <param name="source">The folder to copy files from</param>
+        /// <param name="dest">The folder to copy files to</param>
+        /// <param name="progressCallback">Callback function that gets called when an item 
+        /// is copied or ignored</param>
         public static void DeepCopy(DirectoryInfo source, DirectoryInfo dest, Action<bool> progressCallback)
         {
             foreach(FileSystemInfo item in source.GetFileSystemInfos())
@@ -88,11 +94,29 @@ namespace FileSync.Models
             }
         }
 
+        /// <summary>
+        /// Copies all of the contents of source into dest. If an item already exists in dest,
+        /// it is replace if and only if the item in source was modified more recently. The
+        /// progressCallback is called each time an item is copied or ignored, and is passed 
+        /// a 'true' if the item was copied and 'false' if it was ignored.
+        /// </summary>
+        /// <param name="source">The folder to copy files from</param>
+        /// <param name="dest">The folder to copy files to</param>
+        /// <param name="progressCallback">Callback function that gets called when an item 
+        /// is copied or ignored</param>
         public static void DeepCopy(string source, string dest, Action<bool> progressCallback)
         {
             DeepCopy(new DirectoryInfo(source), new DirectoryInfo(dest), progressCallback);
         }
 
+        /// <summary>
+        /// Gets the relative path from root to child.
+        /// If the child path is not actually a descendent of root,
+        /// undefined behaviour will occur.
+        /// </summary>
+        /// <param name="root">The root path</param>
+        /// <param name="child">The child path</param>
+        /// <returns>The relative path from root to child</returns>
         public static string GetRelativePath(string root, string child)
         {
             string relativePath = child.Replace(root, null);
@@ -110,6 +134,14 @@ namespace FileSync.Models
             return relativePath;
         }
 
+        /// <summary>
+        /// Gets the relative path from root to child.
+        /// If the child path is not actually a descendent of root,
+        /// undefined behaviour will occur.
+        /// </summary>
+        /// <param name="root">The root filesystem object</param>
+        /// <param name="child">The child filesystem object</param>
+        /// <returns>The relative path from root to child</returns>
         public static string GetRelativePath(FileSystemInfo root, FileSystemInfo child)
         {
             return GetRelativePath(root.FullName, child.FullName);
