@@ -28,15 +28,53 @@ namespace FileSync
         /// Sets the text on the status strip.
         /// </summary>
         /// <param name="text">The text to display</param>
-        public void SetAlertText(string text)
+        public void DisplayMessage(string text)
         {
+            this.toolStripStatusLabel.ForeColor = System.Drawing.Color.Black;
             this.toolStripStatusLabel.Text = text;
         }
         
         /// <summary>
         /// Clears the text on the status strip.
         /// </summary>
-        public void ClearAlertText()
+        public void ClearMessage()
+        {
+            this.toolStripStatusLabel.Text = "";
+        }
+
+        /// <summary>
+        /// Sets the text on the status strip, 
+        /// prepending "Error: " to it.
+        /// </summary>
+        /// <param name="text">The error text to display</param>
+        public void DisplayErrorMessage(string text)
+        {
+            this.toolStripStatusLabel.ForeColor = System.Drawing.Color.Red;
+            this.toolStripStatusLabel.Text = "Error: " + text;
+        }
+
+        /// <summary>
+        /// Clears the error text.
+        /// </summary>
+        public void ClearErrorMessage()
+        {
+            this.toolStripStatusLabel.Text = "";
+        }
+
+        /// <summary>
+        /// Sets the text on the status strip.
+        /// </summary>
+        /// <param name="text">The text to display</param>
+        public void DisplayProgressMessage(string text)
+        {
+            this.toolStripStatusLabel.ForeColor = System.Drawing.Color.Black;
+            this.toolStripStatusLabel.Text = text;
+        }
+
+        /// <summary>
+        /// Clears the status strip of text.
+        /// </summary>
+        public void ClearProgressMessage()
         {
             this.toolStripStatusLabel.Text = "";
         }

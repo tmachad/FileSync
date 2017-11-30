@@ -52,6 +52,8 @@
             // 
             // sourceTextBox
             // 
+            this.sourceTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.sourceTextBox.Location = new System.Drawing.Point(101, 13);
             this.sourceTextBox.Name = "sourceTextBox";
             this.sourceTextBox.Size = new System.Drawing.Size(369, 22);
@@ -68,6 +70,8 @@
             // 
             // destinationTextBox
             // 
+            this.destinationTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.destinationTextBox.Location = new System.Drawing.Point(101, 48);
             this.destinationTextBox.Name = "destinationTextBox";
             this.destinationTextBox.Size = new System.Drawing.Size(369, 22);
@@ -75,7 +79,8 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 102);
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(12, 93);
             this.progressBar.MarqueeAnimationSpeed = 25;
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(541, 23);
@@ -84,6 +89,7 @@
             // 
             // sourceButton
             // 
+            this.sourceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.sourceButton.Location = new System.Drawing.Point(476, 10);
             this.sourceButton.Name = "sourceButton";
             this.sourceButton.Size = new System.Drawing.Size(77, 25);
@@ -94,6 +100,7 @@
             // 
             // destinationButton
             // 
+            this.destinationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.destinationButton.Location = new System.Drawing.Point(476, 45);
             this.destinationButton.Name = "destinationButton";
             this.destinationButton.Size = new System.Drawing.Size(77, 25);
@@ -107,7 +114,7 @@
             this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.startButton.Location = new System.Drawing.Point(222, 76);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(112, 60);
+            this.startButton.Size = new System.Drawing.Size(112, 54);
             this.startButton.TabIndex = 7;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
@@ -118,7 +125,7 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 139);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 133);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(565, 22);
             this.statusStrip1.TabIndex = 8;
@@ -133,7 +140,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(565, 161);
+            this.ClientSize = new System.Drawing.Size(565, 155);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.destinationButton);
@@ -143,6 +150,7 @@
             this.Controls.Add(this.destinationLabel);
             this.Controls.Add(this.sourceTextBox);
             this.Controls.Add(this.sourceLabel);
+            this.MinimumSize = new System.Drawing.Size(400, 200);
             this.Name = "View_FileSync";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

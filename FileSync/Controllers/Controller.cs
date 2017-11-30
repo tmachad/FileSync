@@ -28,13 +28,13 @@ namespace FileSync.Controllers
         /// <param name="destinationPath">Path to destination directory</param>
         public void Start(string sourcePath, string destinationPath)
         {
-            this._view.ClearAlertText();
+            this._view.ClearErrorMessage();
             try
             {
                 sourcePath = Path.GetFullPath(sourcePath);
             } catch (Exception ex)
             {
-                this._view.SetAlertText("Error: Source path is invalid");
+                this._view.DisplayErrorMessage("Source path is invalid");
                 return;
             }
             try
@@ -42,18 +42,19 @@ namespace FileSync.Controllers
                 destinationPath = Path.GetFullPath(destinationPath);
             } catch (Exception ex)
             {
-                this._view.SetAlertText("Error: Destination path is invalid");
+                this._view.DisplayErrorMessage("Destination path is invalid");
+                return;
             }
 
             this.sourcePath = sourcePath;
             this.destinationPath = destinationPath;
 
-            this._view.SetAlertText("Finding files...");
+            this._view.DisplayMessage("Finding files...");
             this._view.FindingFiles();
 
             int numberOfFiles = FileManipulator.DeepFileCount(sourcePath);
 
-            this._view.SetAlertText($"Copying {numberOfFiles} items");
+            this._view.DisplayMessage($"Copying {numberOfFiles} items");
             this._view.CopyingFiles(numberOfFiles);
 
             Thread copyThread = new Thread(StartFileCopy);
@@ -75,9 +76,9 @@ namespace FileSync.Controllers
                     copiedCount++;
                 }
                 this._view.SetProgress(totalCount);
-                this._view.SetAlertText($"Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} items");
+                this._view.DisplayProgressMessage($"Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} items");
             });
-            this._view.SetAlertText($"Done copying. Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} items");
+            this._view.DisplayMessage($"Done copying. Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} items");
             this._view.DoneCopyingFiles();
         }
     }

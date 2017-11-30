@@ -4,15 +4,37 @@ namespace FileSync.Views
     interface IFileSyncView
     {
         /// <summary>
-        /// Sets some text to alert the user of something.
+        /// Sets some text to display a message to the user.
         /// </summary>
         /// <param name="text">The text to display to the user</param>
-        void SetAlertText(string text);
+        void DisplayMessage(string text);
 
         /// <summary>
-        /// Clears the alert text.
+        /// Clears the message.
         /// </summary>
-        void ClearAlertText();
+        void ClearMessage();
+
+        /// <summary>
+        /// Sets some text to show the user an error.
+        /// </summary>
+        /// <param name="text">The error text to display to the user</param>
+        void DisplayErrorMessage(string text);
+
+        /// <summary>
+        /// Clears the error text.
+        /// </summary>
+        void ClearErrorMessage();
+
+        /// <summary>
+        /// Sets some text to display progress information.
+        /// </summary>
+        /// <param name="text">The progress text to display</param>
+        void DisplayProgressMessage(string text);
+
+        /// <summary>
+        /// Clears the progress text that was displayed.
+        /// </summary>
+        void ClearProgressMessage();
 
         /// <summary>
         /// Sets the UI to it's initial state.
