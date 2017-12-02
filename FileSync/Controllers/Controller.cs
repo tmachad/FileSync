@@ -13,6 +13,7 @@ namespace FileSync.Controllers
 
         private string sourcePath = "";
         private string destinationPath = "";
+        private int numberOfFiles = 0;
 
         public Controller(IFileSyncView view)
         {
@@ -52,7 +53,7 @@ namespace FileSync.Controllers
             this._view.DisplayMessage("Finding files...");
             this._view.FindingFiles();
 
-            int numberOfFiles = FileManipulator.DeepFileCount(sourcePath);
+            numberOfFiles = FileManipulator.DeepFileCount(sourcePath);
 
             this._view.DisplayMessage($"Copying {numberOfFiles} items");
             this._view.CopyingFiles(numberOfFiles);
@@ -68,17 +69,25 @@ namespace FileSync.Controllers
         {
             int totalCount = 0;
             int copiedCount = 0;
-            FileManipulator.DeepCopy(sourcePath, destinationPath, (copied) =>
+            try
             {
-                totalCount ++;
-                if (copied)
+                FileManipulator.DeepCopy(sourcePath, destinationPath, (copied) =>
                 {
-                    copiedCount++;
-                }
-                this._view.SetProgress(totalCount);
-                this._view.DisplayProgressMessage($"Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} items");
-            });
-            this._view.DisplayMessage($"Done copying. Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} items");
+                    totalCount++;
+                    if (copied)
+                    {
+                        copiedCount++;
+                    }
+                    this._view.SetProgress(totalCount);
+                    this._view.DisplayProgressMessage($"Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} checked items out of {numberOfFiles} items");
+                });
+            } catch (Exception e)
+            {
+                this._view.DisplayErrorMessage(e.Message);
+                this._view.DoneCopyingFiles();
+                return;
+            }
+            this._view.DisplayMessage($"Done copying. Copied {copiedCount}, ignored {totalCount - copiedCount} of {totalCount} checked items out of {numberOfFiles} items");
             this._view.DoneCopyingFiles();
         }
     }

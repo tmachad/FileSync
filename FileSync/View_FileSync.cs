@@ -99,6 +99,8 @@ namespace FileSync
                 this.sourceTextBox.Enabled = true;
                 this.destinationTextBox.Clear();
                 this.destinationTextBox.Enabled = true;
+                this.sourceButton.Enabled = true;
+                this.destinationButton.Enabled = true;
             }
         }
 
@@ -120,6 +122,8 @@ namespace FileSync
                 this.progressBar.Style = ProgressBarStyle.Marquee;
                 this.sourceTextBox.Enabled = false;
                 this.destinationTextBox.Enabled = false;
+                this.sourceButton.Enabled = false;
+                this.destinationButton.Enabled = false;
             }
         }
 
@@ -146,6 +150,8 @@ namespace FileSync
                 this.progressBar.Step = 1;
                 this.sourceTextBox.Enabled = false;
                 this.destinationTextBox.Enabled = false;
+                this.sourceButton.Enabled = false;
+                this.destinationButton.Enabled = false;
             }
         }
 
@@ -165,6 +171,8 @@ namespace FileSync
                 this.startButton.Show();
                 this.sourceTextBox.Enabled = true;
                 this.destinationTextBox.Enabled = true;
+                this.sourceButton.Enabled = true;
+                this.destinationButton.Enabled = true;
             }
         }
 
